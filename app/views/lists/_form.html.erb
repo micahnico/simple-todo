@@ -1,0 +1,11 @@
+<div class="card shadow-sm">
+  <div class="card-body">
+    <%= form_for [@project, @list] do |f| %>
+      <%= f.label :name %>
+      <%= f.text_field :name, required: true, class: 'form-control mb-2' %>
+      <%= button_tag type: 'submit', class: "btn btn-outline-primary", data: { disable_with: "<i class='fas fa-spin fa-spinner'></i>"} do %>
+        Save <i class="fas fa-check"></i>
+      <% end %>
+    <% end %>
+  </div>
+</div>

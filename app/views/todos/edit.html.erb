@@ -1,0 +1,25 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Projects", projects_path, class: 'black' %></li>
+    <li class="breadcrumb-item"><%= link_to @project.name, project_lists_path(@project), class: 'black' %></li>
+    <li class="breadcrumb-item"><%= link_to @list.name, project_list_todos_path(@project, @list), class: 'black' %></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Todo</li>
+  </ol>
+</nav>
+
+<div class="card shadow">
+  <div class="card-body">
+    <h5 class="mb-3">Edit Todo</h5>
+    
+    <%= form_for [@project, @list, @todo] do |f| %>
+      <%= f.text_field :description, class: 'form-control mb-1', rows: 5 %>
+      <%= f.date_field :due_date, class: 'form-control mb-2' %>
+      <%= button_tag type: 'submit', class: "btn btn-primary", data: { disable_with: "<i class='fas fa-spin fa-spinner'></i>"} do %>
+        Save <i class="fas fa-check"></i>
+      <% end %>
+      <%= link_to :back, class: 'btn btn-link' do %>
+        <i class="fas fa-arrow-left"></i> Back
+      <% end %>
+    <% end %>
+  </div>
+</div>
