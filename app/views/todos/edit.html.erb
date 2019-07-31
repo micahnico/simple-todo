@@ -14,11 +14,8 @@
     <%= form_for [@project, @list, @todo] do |f| %>
       <%= f.text_field :description, class: 'form-control mb-1', rows: 5 %>
       <%= f.date_field :due_date, class: 'form-control mb-2' %>
-      <%= button_tag type: 'submit', class: "btn btn-primary", data: { disable_with: "<i class='fas fa-spin fa-spinner'></i>"} do %>
+      <%= button_tag type: 'submit', class: "btn btn-outline-primary", data: { disable_with: "<i class='fas fa-spin fa-spinner'></i>"} do %>
         Save <i class="fas fa-check"></i>
-      <% end %>
-      <%= link_to :back, class: 'btn btn-link' do %>
-        <i class="fas fa-arrow-left"></i> Back
       <% end %>
     <% end %>
   </div>

@@ -1,10 +1,10 @@
-require 'net/http'
 
 class ProjectsController < ApplicationController
-  before_action :load_project, only: [:edit, :update, :destroy]
+  before_action :load_project, only: [:toggle_archive, :edit, :update, :destroy]
 
   def index
-    @projects = Project.all
+    @filter_projects = FilterProjects.execute(filter_params)
+    @projects = @filter_projects.projects
     @overdue_todos = Todo.overdue
     @today_todos = Todo.due_today
   end
@@ -33,6 +33,14 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def toggle_archive
+    if @project.toggle_archive
+      redirect_to projects_path, notice: 'Project archived'
+    else
+      render :back, notice: 'Error!'
+    end
+  end
+
   def destroy
     if @project.destroy!
       redirect_to projects_path, notice: 'Project deleted'
@@ -45,6 +53,14 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:name, :description)
+  end
+
+  def filter_params
+    if params[:filter_projects]
+      params.require(:filter_projects).permit(:query, :status)
+    else
+      {}
+    end
   end
 
   def load_project

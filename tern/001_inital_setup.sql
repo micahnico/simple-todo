@@ -24,16 +24,27 @@ create table login_sessions (
 );
 create index on login_sessions (user_id);
 
+create table labels (
+  id uuid DEFAULT public.gen_random_uuid() primary key,
+  name character varying not null
+);
+
 create table projects (
   id uuid DEFAULT public.gen_random_uuid() primary key,
   name varchar not null,
-  description text
+  description text,
+  archived_at timestamp with time zone,
+  label_id uuid references labels,
+  created_at timestamp with time zone not null,
+  updated_at timestamp with time zone not null
 );
 
 create table lists (
   id uuid DEFAULT public.gen_random_uuid() primary key,
   name varchar not null,
-  project_id uuid references projects not null
+  project_id uuid references projects not null,
+  created_at timestamp with time zone not null,
+  updated_at timestamp with time zone not null
 );
 
 create table todos (
@@ -41,9 +52,12 @@ create table todos (
   description text,
   due_date date,
   completed_at timestamp with time zone,
-  list_id uuid references lists not null
+  list_id uuid references lists not null,
+  created_at timestamp with time zone not null,
+  updated_at timestamp with time zone not null
 );
 
+grant select, insert, update, delete on labels to {{.app_user}};
 grant select, insert, update, delete on projects to {{.app_user}};
 grant select, insert, update, delete on lists to {{.app_user}};
 grant select, insert, update, delete on todos to {{.app_user}};
@@ -55,6 +69,7 @@ grant select, insert, update, delete on login_sessions to {{.app_user}};
 drop table todos;
 drop table lists;
 drop table projects;
+drop table labels;
 drop table login_sessions;
 drop table users;
 
