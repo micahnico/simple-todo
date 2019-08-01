@@ -7,7 +7,11 @@
       <%= f.text_area :description, class: 'form-control mb-2', rows: 5 %>
       <%= f.label :label %><br>
       <div style='display: inline-block;'>
-        <%= f.collection_select :label_id, Current.user.labels, :id, :name, { prompt: 'None'}, {class: 'form-control mb-2'} %>
+        <%= f.select :label_id,
+          [["None", ""]] + Current.user.labels.map { |l| [l.name, l.id] },
+          {},
+          {class: 'form-control mb-2'}
+        %>
       </div><br>
       
       <%= button_tag type: 'submit', class: "btn btn-outline-primary", data: { disable_with: "<i class='fas fa-spin fa-spinner'></i>"} do %>
