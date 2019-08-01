@@ -29,3 +29,7 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+/tern/production.conf
+/tern/test.conf
+/tern/development.conf
