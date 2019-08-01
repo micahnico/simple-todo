@@ -1,5 +1,6 @@
 -- comment out the extension part for heroku deploy
 -- then to create extension run below command then paste the create extension into the db prompt
+-- heroku pg:psql
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
