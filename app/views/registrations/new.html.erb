@@ -1,0 +1,42 @@
+<h1 class="pt-5 mb-4 text-center" style="color: white;">Simple Todo</h1>
+
+<div class="col-sm-10 col-md-8 col-lg-6 col-xl-4 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4>Create account</h4>
+      <%= form_for(@create_account, url: registration_path, html: { method: :post }) do |f| %>
+
+      <% if @create_account.errors[:base].present? %>
+        <div class="red mb-2" role="alert">
+          <i class="fas fa-exclamation-circle"></i>
+          <%= @create_account.errors[:base].join(", ") %>
+        </div>
+      <% end %>
+    
+        <div class="mb-1">
+          <%= f.label :email %>
+          <%= f.email_field :email, class: 'form-control', required: true %>
+        </div>
+        
+        <div class="mb-1">
+          <%= f.label :password %>
+          <%= f.password_field :password, autocomplete: "off", class: 'form-control', required: true %>
+          <small id="passwordHelp" class="form-text text-muted">Must be at least 8 characters</small>
+        </div>
+    
+        <div class="mb-1">
+          <%= f.label :password_confirmation %>
+          <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control', required: true %>
+        </div>
+    
+        <div class="actions mt-3">
+          <%= button_tag type: 'submit', class: "btn btn-outline-primary mr-2" do %>
+            Complete Sign Up <i class="fas fa-check"></i>
+          <% end %>
+
+          <%= link_to "Log in", new_session_path %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

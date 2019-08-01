@@ -1,0 +1,30 @@
+
+<h1 class="pt-5 mb-4 text-center" style="color: white;">Simple Todo</h1>
+
+<div class="col-sm-10 col-md-6 col-lg-4 offset-sm-1 offset-md-3 offset-lg-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4>Log in</h4>
+      <%= form_for @login, url: session_path do |f| %>
+        <% if @login.errors[:base].present? %>
+          <div class="red mb-2" role="alert">
+            <i class="fas fa-exclamation-circle"></i>
+            <%= @login.errors[:base].join(", ") %>
+          </div>
+        <% end %>
+
+        <%= f.label :email %>
+        <%= f.text_field :email, autofocus: true, class: 'form-control mb-2', required: true %>
+
+        <%= f.label :password %>
+        <%= f.password_field :password, autocomplete: "off", class: 'form-control mb-3', required: true %>
+
+        <%= button_tag type: 'submit', class: "btn btn-outline-primary mr-2" do %>
+          Log In <i class="fas fa-sign-in-alt"></i>
+        <% end %>
+
+        <%= link_to "Sign Up", new_registration_path %>
+      <% end %>
+    </div>
+  </div>
+</div>

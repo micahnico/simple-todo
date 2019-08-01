@@ -14,7 +14,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.new project_params
+    @project = Current.user.projects.new project_params
     if @project.save
       redirect_to project_lists_path(@project), notice: 'Project created'
     else
@@ -52,14 +52,14 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:name, :description)
+    params.require(:project).permit(:name, :description, :label_id)
   end
 
   def filter_params
     if params[:filter_projects]
-      params.require(:filter_projects).permit(:query, :status)
+      params.require(:filter_projects).permit(:query, :status, :label_id).merge(user: Current.user)
     else
-      {}
+      {user: Current.user}
     end
   end
 

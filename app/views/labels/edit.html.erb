@@ -1,0 +1,9 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Projects", projects_path , class: 'black' %></li>
+    <li class="breadcrumb-item"><%= link_to "Labels", labels_path , class: 'black' %></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit</li>
+  </ol>
+</nav>
+
+<%= render 'form' %>

@@ -26,7 +26,8 @@ create index on login_sessions (user_id);
 
 create table labels (
   id uuid DEFAULT public.gen_random_uuid() primary key,
-  name character varying not null
+  name character varying not null,
+  user_id uuid references users not null
 );
 
 create table projects (
@@ -34,6 +35,7 @@ create table projects (
   name varchar not null,
   description text,
   archived_at timestamp with time zone,
+  user_id uuid references users not null,
   label_id uuid references labels,
   created_at timestamp with time zone not null,
   updated_at timestamp with time zone not null

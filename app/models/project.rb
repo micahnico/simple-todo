@@ -1,4 +1,6 @@
 class Project < ApplicationRecord
+  belongs_to :user
+  belongs_to :label, optional: true
   has_many :lists, dependent: :destroy
   has_many :todos, through: :lists
 

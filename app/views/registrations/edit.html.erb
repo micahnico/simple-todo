@@ -1,0 +1,48 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Projects", projects_path, class: 'black' %></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit account</li>
+  </ol>
+</nav>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <%= form_for(@update_account_profile, url: registration_path, html: { method: :put }) do |f| %>
+
+      <% if @update_account_profile.errors[:base].present? %>
+        <div class="red mb-2" role="alert">
+          <i class="fas fa-exclamation-circle"></i>
+          <%= @update_account_profile.errors[:base].join(", ") %>
+        </div>
+      <% end %>
+        <div class="mb-1">
+          <%= f.label :email %>
+          <%= f.email_field :email, class: 'form-control', required: true %>
+        </div>
+        
+        <div class="mb-1">
+          <%= f.label :password %>
+          <%= f.password_field :password, autocomplete: "off", class: 'form-control', id: 'edit-password' %>
+          <small id="passwordHelp" class="form-text text-muted">Leave Blank If You Don't Want To Change It</small>
+        </div>
+    
+        <div class="mb-1 d-none" id="edit-password-confirmation-field">
+          <%= f.label :password_confirmation %>
+          <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
+        </div>
+    
+        <div class="mb-3">
+          <%= f.label :current_password %>
+          <%= f.password_field :current_password, autocomplete: "off", required: true, class: 'form-control' %>
+          <small id="currentPasswordHelp" class="form-text text-muted">We Need Your Current Password to Confirm Your Changes</small>
+        </div>
+    
+        <div class="actions">
+          <%= button_tag type: 'submit', class: "btn btn-outline-primary" do %>
+            Update <i class="fas fa-check"></i>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
