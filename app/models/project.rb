@@ -16,15 +16,15 @@ class Project < ApplicationRecord
     if archived?
       update! archived_at: nil
     else
-      update! archived_at: DateTime.now
+      update! archived_at: DateTime.now.in_time_zone
     end
   end
 
   def today_todos
-    todos.where(completed_at: nil).where('due_date = CURRENT_DATE')
+    todos.where(completed_at: nil).where('due_date = ?', Time.zone.today)
   end
 
   def overdue_todos
-    todos.where(completed_at: nil).where('due_date < CURRENT_DATE')
+    todos.where(completed_at: nil).where('due_date < ?', Time.zone.today)
   end
 end

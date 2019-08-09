@@ -69,7 +69,7 @@
                 <td class="text-center">
                   <% if todo.completed? %>
                     <span style="text-decoration: line-through;"><%= todo.due_date.strftime("%b %e") %></span>
-                  <% elsif todo.due_date < Date.today %>
+                  <% elsif todo.due_date < Time.zone.today %>
                     <span style="color: red;"><%= todo.due_date.strftime("%b %e") %></span>
                   <% else %>
                     <%= todo.due_date.strftime("%b %e") %>
@@ -109,7 +109,7 @@
               <p class="">
                 <% if todo.completed? %>
                   <span style="text-decoration: line-through;">Due <%= todo.due_date.strftime("%b %e") %></span>
-                <% elsif todo.due_date < Date.today %>
+                <% elsif todo.due_date < Time.zone.today %>
                   <span style="color: red;">Due <%= todo.due_date.strftime("%b %e") %></span>
                 <% else %>
                   Due <%= todo.due_date.strftime("%b %e") %>
