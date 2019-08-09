@@ -8,20 +8,18 @@
 
 <div class="card shadow-sm mb-3">
   <div class="card-body">
-    <h5 class="mb-2">New Todo</h5>
+    <h5 class="mb-2">New todo</h5>
 
     <%= form_for [@project, @list, Todo.new] do |f| %>
       <%= f.label :description %>
       <div class="input-group mb-1">
-        <%= f.text_field :description, placeholder: 'enter todo...', class: 'form-control border-right-0', required: true, autofocus: true %>
-        <div class="input-group-append">
-          <span class="input-group-text border-left-0"><button class="addon-btn" tabindex = "-1" data-disable-with="<i class='fas fa-spin fa-spinner'></i>" style="cursor: pointer;"><i class="fas fa-check green"></i></button></span>
-        </div>
+        <%= f.text_field :description, placeholder: 'enter todo...', class: 'form-control', required: true, autofocus: true %>
       </div>
       <%= f.label :due_date %>
       <div class="input-group">
         <%= f.date_field :due_date, value: Date.today + 7.days, class: 'form-control' %>
       </div>
+      <button class="btn btn-outline-primary mt-2" data-disable-with="<i class='fas fa-spin fa-spinner'></i>">Add <i class="fas fa-check"></i></button>
     <% end %>
   </div>
 </div>
@@ -29,11 +27,11 @@
 <div class="card shadow-sm">
   <div class="card-body">
     <h5 class="mb-3">Todos</h5>
-
+    <%= @tab %>
       <%= form_for @search, url: project_list_todos_path(@project, @list), method: :get, html: {class: "form"} do |f| %>
-        <div class="input-group mb-1">
+        <%= hidden_field_tag :tab, @tab %>
+        <div class="input-group mb-0">
           <%= f.text_field :query, placeholder: "Search todos...", class: "form-control border-right-0 border", required: true %>
-          <%= f.hidden_field :list_id, value: @list.id %>
           <span class="input-group-append">
             <button class="btn btn-outline-secondary border border-left-0" type="submit">
               <i class="fa fa-search"></i>
@@ -41,107 +39,30 @@
           </span>
         </div>
         <% if params[:todo_search] %>
-          <div class="m-1 mt-0">
-            <%= link_to project_list_todos_path(@project, @list), class: 'red' do %>
-              <i class="fas fa-times-circle red"></i> Clear Search
+          <div class="mt-1">
+            <%= link_to project_list_todos_path(@project, @list, tab: @tab), class: 'red' do %>
+              <i class="fas fa-times-circle red"></i> Clear search
             <% end %>
           </div>
         <% end %>
       <% end %>
 
+      <div class="btn-group mt-2 mb-1" role="group">
+        <%= link_to 'In progress', project_list_todos_path(@project, @list), class: "btn btn-sm #{if @tab != 'completed' then 'btn-outline-primary' else 'btn-outline-secondary' end}" %>
+        <%= link_to 'Completed', project_list_todos_path(@project, @list, tab: 'completed'), class: "btn btn-sm #{if @tab == 'completed' then 'btn-outline-primary' else 'btn-outline-secondary' end}" %>
+      </div>
+
       <% if @todos.count > 0 %>
-        <table class="table table-borderless table-hover d-none d-md-table" style="table-layout:fixed;">
-            <tr>
-              <th colspan="2">Description</th>
-              <th class="text-center">Status</th>
-              <th class="text-center">Due Date</th>
-              <th class="text-center">Actions</th>
-            </tr>
-        
-            <% @todos.display_order.each do |todo| %>
-              <tr>
-                <td colspan="2"><%= todo.description %></td>
-                <% if todo.completed? %>
-                  <td style="color: #00a20b" class="text-center"><b>Completed</b></td>
-                <% else %>
-                  <td style="color: #e79100" class="text-center" style="white-space:nowrap;"><b>In Progress</b></td>
-                <% end %>
-                <td class="text-center">
-                  <% if todo.completed? %>
-                    <span style="text-decoration: line-through;"><%= todo.due_date.strftime("%b %e") %></span>
-                  <% elsif todo.due_date < Time.zone.today %>
-                    <span style="color: red;"><%= todo.due_date.strftime("%b %e") %></span>
-                  <% else %>
-                    <%= todo.due_date.strftime("%b %e") %>
-                  <% end %>
-                </td>
-                <td style="font-size: 20px;" class="text-center">
-                  <% if todo.completed? %>
-                    <%= link_to toggle_complete_project_list_todo_path(@project, @list, todo), class: 'no-text-decor', method: :post, data: {toggle: 'tooltip'}, title: 'Mark Todo Uncomplete' do %>
-                      <i class="far fa-check-square black mr-1"></i>
-                    <% end %>
-                  <% else %>
-                    <%= link_to toggle_complete_project_list_todo_path(@project, @list, todo), class: 'no-text-decor', method: :post, data: {toggle: 'tooltip'}, title: 'Mark Todo Complete' do %>
-                      <i class="far fa-square black mr-1"></i>
-                    <% end %>
-                  <% end %>
-                  
-                  <%= link_to edit_project_list_todo_path(@project, @list, todo), class: 'no-text-decor', data: {toggle: 'tooltip'}, title: 'Edit Todo' do %>
-                    <i class="far fa-edit black"></i>
-                  <% end -%>
 
-                  <%= link_to project_list_todo_path(@project, @list, todo), class: 'no-text-decor', method: :delete, data: { confirm: "Delete Todo?", toggle: 'tooltip' }, title: 'Delete Todo' do %>
-                    <i class="far fa-trash-alt black"></i>
-                  <% end -%>
-                </td>
-              </tr>
-            <% end %>
-          </table>
-
-          <div class="d-md-none mt-3">
-            <% @todos.each do |todo| %>
-              <p><%= todo.description %></p>
-              <% if todo.completed? %>
-                <p style="color: #00a20b"><b>Completed</b></p>
-              <% else %>
-                <p style="color: #e79100" style="white-space:nowrap;"><b>In Progress</b></p>
-              <% end %>
-              <p class="">
-                <% if todo.completed? %>
-                  <span style="text-decoration: line-through;">Due <%= todo.due_date.strftime("%b %e") %></span>
-                <% elsif todo.due_date < Time.zone.today %>
-                  <span style="color: red;">Due <%= todo.due_date.strftime("%b %e") %></span>
-                <% else %>
-                  Due <%= todo.due_date.strftime("%b %e") %>
-                <% end %>
-                <p>
-                  <% if todo.completed? %>
-                    <%= link_to toggle_complete_project_list_todo_path(@project, @list, todo), class: 'no-text-decor black mr-2', method: :post do %>
-                      <i class="far fa-check-square"></i> Mark uncomplete
-                    <% end %>
-                  <% else %>
-                    <%= link_to toggle_complete_project_list_todo_path(@project, @list, todo), class: 'no-text-decor black mr-2', method: :post do %>
-                      <i class="far fa-square"></i> Mark complete
-                    <% end %>
-                  <% end %>
-                  
-                  <%= link_to edit_project_list_todo_path(@project, @list, todo), class: 'no-text-decor black mr-2' do %>
-                    <i class="far fa-edit"></i> Edit
-                  <% end -%>
-  
-                  <%= link_to project_list_todo_path(@project, @list, todo), class: 'no-text-decor black', method: :delete, data: { confirm: "Delete Todo?" } do %>
-                    <i class="far fa-trash-alt"></i> Delete
-                  <% end -%>
-                </p>
-              </p>
-              <% if todo != @todos.last %>
-                <hr class="mt-2 mb-2">
-              <% end %>
-            <% end %>
-          </div>
-        <% else %>
-          <p class="text-muted mt-2 mb-0">No todos</p>
-        <% end %>
+      <% if @tab == 'completed' %>
+        <%= render 'completed' %>
+      <% else %>
+        <%= render 'in_progress' %>
+      <% end %>
+      
+    <% else %>
+      <p class="text-muted mt-2 mb-0">No todos</p>
+    <% end %>
   </div>
 </div>
 

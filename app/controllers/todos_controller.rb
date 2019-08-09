@@ -6,6 +6,7 @@ class TodosController < ApplicationController
   def index
     @search = TodoSearch.execute search_params
     @todos = @search.todos
+    @tab = params[:tab]
   end
 
   def create
@@ -18,24 +19,27 @@ class TodosController < ApplicationController
   end
 
   def update
+    tab = @todo.completed? ? 'completed' : nil
     if @todo.update! todo_params
-      redirect_to project_list_todos_path(@project, @list), notice: 'Todo updated'
+      redirect_to project_list_todos_path(@project, @list, tab: tab), notice: 'Todo updated'
     else
       render :back, notice: 'Error! Todo could not be updated'
     end
   end
 
   def destroy
+    tab = @todo.completed? ? 'completed' : nil
     if @todo.destroy!
-      redirect_to project_list_todos_path(@project, @list), notice: 'Todo deleted'
+      redirect_to project_list_todos_path(@project, @list, tab: tab), notice: 'Todo deleted'
     else
       render :back, notice: 'Error! Todo could not be deleted'
     end
   end
 
   def toggle_complete
+    tab = @todo.completed? ? 'completed' : nil
     if @todo.toggle_complete
-      redirect_to project_list_todos_path(@project, @list)
+      redirect_to project_list_todos_path(@project, @list, tab: tab)
     else
       render :back, notice: 'Error!'
     end
@@ -45,7 +49,7 @@ class TodosController < ApplicationController
 
   def search_params
     if params[:todo_search]
-      params.require(:todo_search).permit(:query, :list_id)
+      params.require(:todo_search).permit(:query).merge(list_id: @list.id)
     else
       {list_id: @list.id}
     end
