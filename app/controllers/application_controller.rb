@@ -2,6 +2,12 @@ class ApplicationController < ActionController::Base
   before_action :set_current_request_details
   before_action :set_current_user
   before_action :require_current_user
+  around_action :set_time_zone
+
+  def set_time_zone(&block)
+    time_zone = Current.user.try(:time_zone) || 'UTC'
+    Time.use_zone(time_zone, &block)
+  end
 
   private
 

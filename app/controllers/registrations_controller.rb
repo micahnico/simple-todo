@@ -37,7 +37,7 @@ class RegistrationsController < ApplicationController
   private 
   
   def update_account_profile_params
-    params.require(:update_account_profile).permit :email, :password, :password_confirmation, :current_password
+    params.require(:update_account_profile).permit :email, :time_zone, :password, :password_confirmation, :current_password
   end
 
   def create_account_params

@@ -20,6 +20,11 @@
           <%= f.label :email %>
           <%= f.email_field :email, class: 'form-control', required: true %>
         </div>
+
+        <div class="mb-1">
+          <%= f.label :time_zone %>
+          <%= f.select :time_zone, time_zone_options_for_select(Current.user.time_zone, nil, ActiveSupport::TimeZone), {}, {class: 'form-control'} %>
+        </div>
         
         <div class="mb-1">
           <%= f.label :password %>
