@@ -58,7 +58,7 @@
               <th class="text-center">Actions</th>
             </tr>
         
-            <% @todos.each do |todo| %>
+            <% @todos.display_order.each do |todo| %>
               <tr>
                 <td colspan="2"><%= todo.description %></td>
                 <% if todo.completed? %>

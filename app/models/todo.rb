@@ -1,7 +1,7 @@
 class Todo < ApplicationRecord
   belongs_to :list
 
-  default_scope -> { order(completed_at: :desc, due_date: :asc) }
+  scope :display_order, -> { order(completed_at: :desc, due_date: :asc) }
   scope :due_today, -> { where(completed_at: nil).where('due_date = CURRENT_DATE') }
   scope :overdue, -> { where(completed_at: nil).where('due_date < CURRENT_DATE') }
 

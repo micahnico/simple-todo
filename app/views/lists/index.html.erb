@@ -26,7 +26,7 @@
         <h5 class="mb-2"><%= list.name %></h5>
 
         <ul class="pl-3 mb-0">
-          <% list.todos.all_uncompleted.first(5).each do |todo| %>
+          <% list.todos.all_uncompleted.display_order.first(5).each do |todo| %>
             <li><%= todo.description.truncate(30) %></li>
           <% end -%>
         </ul>
