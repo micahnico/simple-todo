@@ -27,7 +27,6 @@
 <div class="card shadow-sm">
   <div class="card-body">
     <h5 class="mb-3">Todos</h5>
-    <%= @tab %>
       <%= form_for @search, url: project_list_todos_path(@project, @list), method: :get, html: {class: "form"} do |f| %>
         <%= hidden_field_tag :tab, @tab %>
         <div class="input-group mb-0">
@@ -48,21 +47,15 @@
       <% end %>
 
       <div class="btn-group mt-2 mb-1" role="group">
-        <%= link_to 'In progress', project_list_todos_path(@project, @list), class: "btn btn-sm #{if @tab != 'completed' then 'btn-outline-primary' else 'btn-outline-secondary' end}" %>
-        <%= link_to 'Completed', project_list_todos_path(@project, @list, tab: 'completed'), class: "btn btn-sm #{if @tab == 'completed' then 'btn-outline-primary' else 'btn-outline-secondary' end}" %>
+        <%= link_to 'In progress', project_list_todos_path(@project, @list), style: '', class: "btn btn-sm #{if @tab != 'completed' then 'btn-primary' else 'btn-outline-primary' end}" %>
+        <%= link_to 'Completed', project_list_todos_path(@project, @list, tab: 'completed'), style: 'margin-left: .35px;', class: "btn btn-sm #{if @tab != 'completed' then 'btn-outline-primary' else 'btn-primary' end}" %>
       </div>
-
-      <% if @todos.count > 0 %>
 
       <% if @tab == 'completed' %>
         <%= render 'completed' %>
       <% else %>
         <%= render 'in_progress' %>
       <% end %>
-      
-    <% else %>
-      <p class="text-muted mt-2 mb-0">No todos</p>
-    <% end %>
   </div>
 </div>
 

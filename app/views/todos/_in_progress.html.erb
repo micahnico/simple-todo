@@ -1,78 +1,54 @@
-<table class="table table-borderless table-hover d-none d-md-table" style="table-layout:fixed;">
-  <tr>
-    <th style="width: 52px;"></th>
-    <th colspan="2">Description</th>
-    <th class="text-center">Status</th>
-    <th class="text-center">Due Date</th>
-    <th class="text-center">Actions</th>
-  </tr>
-
-  <% @todos.in_progress.display_order.each do |todo| %>
+<% if @todos.in_progress.count > 0 %>
+  <table class="table table-borderless table-hover d-none d-md-table" style="table-layout:fixed;">
     <tr>
-      <td style="width: 52px; padding-top: 10px;">
-        <% if todo.completed? %>
-          <%= link_to toggle_complete_project_list_todo_path(@project, @list, todo), class: 'no-text-decor', method: :post do %>
-            <i class="far fa-check-square fa-2x black"></i>
-          <% end %>
-        <% else %>
+      <th style="width: 52px;"></th>
+      <th colspan="3">Description</th>
+    
+      <th class="text-center">Due Date</th>
+      <th class="text-center">Actions</th>
+    </tr>
+
+    <% @todos.in_progress.display_order.each do |todo| %>
+      <tr>
+        <td style="width: 52px; padding-top: 10px;">
           <%= link_to toggle_complete_project_list_todo_path(@project, @list, todo), class: 'no-text-decor', method: :post do %>
             <i class="far fa-square black fa-2x"></i>
           <% end %>
-        <% end %>
-      </td>
-      <td colspan="2"><%= todo.description %></td>
-      <% if todo.completed? %>
-        <td style="color: #00a20b" class="text-center"><b>Completed</b></td>
-      <% else %>
-        <td style="color: #e79100" class="text-center" style="white-space:nowrap;"><b>In progress</b></td>
-      <% end %>
-      <td class="text-center">
-        <% if todo.completed? %>
-          <span style="text-decoration: line-through;"><%= todo.due_date.strftime("%b %e") %></span>
-        <% elsif todo.due_date < Time.zone.today %>
-          <span style="color: red;"><%= todo.due_date.strftime("%b %e") %></span>
-        <% else %>
-          <%= todo.due_date.strftime("%b %e") %>
-        <% end %>
-      </td>
-      <td style="font-size: 20px;" class="text-center">
-        <%= link_to edit_project_list_todo_path(@project, @list, todo), class: 'no-text-decor', data: {toggle: 'tooltip'}, title: 'Edit todo' do %>
-          <i class="far fa-edit black"></i>
-        <% end -%>
+        </td>
+        <td colspan="3"><%= todo.description %></td>
+        <td class="text-center">
+          <% if todo.due_date < Time.zone.today %>
+            <span style="color: red;"><%= todo.due_date.strftime("%b %e") %></span>
+          <% else %>
+            <%= todo.due_date.strftime("%b %e") %>
+          <% end %>
+        </td>
+        <td style="font-size: 20px;" class="text-center">
+          <%= link_to edit_project_list_todo_path(@project, @list, todo), class: 'no-text-decor', data: {toggle: 'tooltip'}, title: 'Edit todo' do %>
+            <i class="far fa-edit black"></i>
+          <% end -%>
 
-        <%= link_to project_list_todo_path(@project, @list, todo), class: 'no-text-decor', method: :delete, data: { confirm: "Delete todo?", toggle: 'tooltip' }, title: 'Delete todo' do %>
-          <i class="far fa-trash-alt black"></i>
-        <% end -%>
-      </td>
-    </tr>
-  <% end %>
-</table>
-
-<div class="d-md-none mt-3">
-  <% @todos.in_progress.display_order.each do |todo| %>
-    <p><%= todo.description %></p>
-    <% if todo.completed? %>
-      <p style="color: #00a20b"><b>Completed</b></p>
-    <% else %>
-      <p style="color: #e79100" style="white-space:nowrap;"><b>In progress</b></p>
+          <%= link_to project_list_todo_path(@project, @list, todo), class: 'no-text-decor', method: :delete, data: { confirm: "Delete todo?", toggle: 'tooltip' }, title: 'Delete todo' do %>
+            <i class="far fa-trash-alt black"></i>
+          <% end -%>
+        </td>
+      </tr>
     <% end %>
-    <p class="">
-      <% if todo.completed? %>
-        <span style="text-decoration: line-through;">Due <%= todo.due_date.strftime("%b %e") %></span>
-      <% elsif todo.due_date < Time.zone.today %>
-        <span style="color: red;">Due <%= todo.due_date.strftime("%b %e") %></span>
-      <% else %>
-        Due <%= todo.due_date.strftime("%b %e") %>
-      <% end %>
+  </table>
+
+  <div class="d-md-none mt-3">
+    <% @todos.in_progress.display_order.each do |todo| %>
+      <p><%= todo.description %></p>
       <p>
-        <% if todo.completed? %>
-          <%= link_to toggle_complete_project_list_todo_path(@project, @list, todo), class: 'no-text-decor black mr-2', method: :post do %>
-            <i class="far fa-check-square"></i> Mark uncomplete
-          <% end %>
+        <% if todo.due_date < Time.zone.today %>
+          <span style="color: red;">Due <%= todo.due_date.strftime("%b %e") %></span>
         <% else %>
-          <%= link_to toggle_complete_project_list_todo_path(@project, @list, todo), class: 'no-text-decor black mr-2', method: :post do %>
-            <i class="far fa-square"></i> Mark complete
-          <% end %>
+          Due <%= todo.due_date.strftime("%b %e") %>
+        <% end %>
+      </p>
+      <p>
+        <%= link_to toggle_complete_project_list_todo_path(@project, @list, todo), class: 'no-text-decor black mr-2', method: :post do %>
+          <i class="far fa-square"></i> Mark complete
         <% end %>
         
         <%= link_to edit_project_list_todo_path(@project, @list, todo), class: 'no-text-decor black mr-2' do %>
@@ -83,9 +59,12 @@
           <i class="far fa-trash-alt"></i> Delete
         <% end -%>
       </p>
-    </p>
-    <% if todo != @todos.last %>
-      <hr class="mt-2 mb-2">
+      
+      <% if todo != @todos.last %>
+        <hr class="mt-2 mb-2">
+      <% end %>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% else %>
+  <p class="text-muted mt-2 mb-0">No completed todos</p>
+<% end %>
