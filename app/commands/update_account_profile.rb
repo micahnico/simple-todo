@@ -1,6 +1,6 @@
 class UpdateAccountProfile < CommandModel::Model
   parameter :user, presence: true
-  parameter :email, :time_zone, :password, :password_confirmation
+  parameter :email, :time_zone, :dark_theme, :password, :password_confirmation
   parameter :current_password
 
   def load_parameters_from_user
@@ -26,6 +26,6 @@ class UpdateAccountProfile < CommandModel::Model
   end
 
   private def user_params
-    parameters.slice(:email, :time_zone, :password, :password_confirmation)
+    parameters.slice(:email, :time_zone, :dark_theme, :password, :password_confirmation)
   end
 end

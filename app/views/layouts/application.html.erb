@@ -16,8 +16,13 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet"> 
 
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <% if Current.user.dark_theme %>
+      <%= stylesheet_pack_tag 'dark_theme', media: 'all', 'data-turbolinks-track': 'reload' %>
+      <%= javascript_pack_tag 'dark_theme', 'data-turbolinks-track': 'reload' %>
+    <% else %>
+      <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+      <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <% end %>
 
     <link rel="icon" type='image/png' href="/packs/media/images/check-4351b06966fcef51c3bc2efe5278953f.png">
   </head>
