@@ -28,7 +28,7 @@
 
         <div class="mb-1">
           <%= f.label :dark_theme, 'Theme' %>
-          <%= f.select :dark_theme, [["Light", false], ["Dark", true]], {}, {class: 'form-control'} %>
+          <%= f.select :dark_theme, [["Light", false], ["Dark", true]], {selected: Current.user.dark_theme}, {class: 'form-control'} %>
         </div>
         
         <div class="mb-1">
