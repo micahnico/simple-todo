@@ -30,9 +30,9 @@
       <%= form_for @search, url: project_list_todos_path(@project, @list), method: :get, html: {class: "form"} do |f| %>
         <%= hidden_field_tag :tab, @tab %>
         <div class="input-group mb-0">
-          <%= f.text_field :query, placeholder: "Search todos...", class: "form-control border-right-0 border", required: true %>
+          <%= f.text_field :query, placeholder: "Search todos...", class: "form-control border-right-0", required: true %>
           <span class="input-group-append">
-            <button class="btn btn-outline-secondary border border-left-0" type="submit">
+            <button class="btn btn-outline-secondary search-btn border border-left-0" type="submit">
               <i class="fa fa-search"></i>
             </button>
           </span>

@@ -9,6 +9,7 @@ require("@rails/activestorage").start()
 require("channels")
 
 import '../css/main'
+import '../css/dark_theme'
 import '../js/main'
 
 
